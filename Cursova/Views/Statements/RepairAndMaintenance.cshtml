@@ -1,0 +1,52 @@
+﻿@using Cursova.ViewModels;
+
+@model CreateStatementsViewModel
+
+@{
+    ViewData["Title"] = "Подати";
+}
+
+<head>
+    <link rel="stylesheet" href="/css/site.css">
+</head>
+
+<div class="row">
+    <div class="col-md-6 offset-3">
+        <p>
+            <h2>Заява про ремонт/обслуговування</h2>
+        </p>
+        @if (TempData["Error"] != null)
+        {
+            <div class="col-md-12 alert alert-danger">
+                <span><b>Sorry!</b> - @TempData["Error"]</span>
+            </div>
+        }
+        <div class="row">
+            <div class="col-md-8 offset-2">
+                <form asp-action="CreateStatement" asp-controller="Statements" method="post" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div><br />
+                    <div class="form-group">
+                        <label asp-for="MainInfo" class="control-label">Вкажіть вулицю де сталася поломка</label>
+                        <input asp-for="MainInfo" class="form-control">
+                        <span asp-validation-for="MainInfo" class="text-danger"></span>
+                    </div><br />
+                    <div class="form-group">
+                        <textarea asp-for="MoreDetail" rows="5" class="form-control" placeholder="Вкажіть більше інформації про поломку"></textarea>
+                        <span asp-validation-for="MoreDetail" class="text-danger"></span>
+                    </div><br />
+                    <div class="form-group">
+                        <label asp-for="Image"></label>
+                        <input asp-for="Image" type="file" class="form-control" placeholder="Документи">
+                        <span asp-validation-for="Image" class="text-danger"></span>
+                    </div><br />
+                    <div class="form-group">
+                        <form method="post" class="form-inline" asp-controller="Statements" asp-action="CreateStatement">
+                            <button class="btn btn-success float right" asp-controller="Statements" asp-action="CreateStatement" asp-route-type="Ремонт/Обслуговування">Подати</button>
+                        </form>
+                        <a class="btn btn-outline-secondary" asp-controller="Statements" asp-action="SelectType">Назад</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

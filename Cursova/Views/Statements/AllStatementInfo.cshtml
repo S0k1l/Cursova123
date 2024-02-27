@@ -1,0 +1,85 @@
+﻿@using Cursova.Data.Enum;
+@using Cursova.ViewModels;
+
+@model AllStatementInfoViewModel
+
+@{
+    ViewData["Title"] = "Подати";
+}
+
+<head>
+    <link rel="stylesheet" href="/css/site.css">
+</head>
+
+<div class="row">
+    <div class="col-md-6 offset-3">
+        <p>
+            <h2>Заявy написав @Model.UserFullName</h2>
+        </p>
+        @if (TempData["Error"] != null)
+        {
+            <div class="col-md-12 alert alert-danger">
+                <span><b>Sorry!</b> - @TempData["Error"]</span>
+            </div>
+        }
+        <div class="row">
+            <div class="col-md-8 offset-2">
+                <form asp-action="AllStatementInfo" asp-controller="Statements" method="post" enctype="multipart/form-data">
+                    <input asp-for="Id" class="form-control" hidden>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div><br />
+                    <div class="form-group">
+                        <label asp-for="DateTime" class="control-label">Дата подання</label>
+                        <input class="form-control" readonly value="@Model.DateTime.ToShortDateString()">
+                    </div><br />
+                    <div class="form-group">
+                        <label asp-for="Type" class="control-label">Прикріплене фото</label>
+                        <a href="/images/@Model.ImageUrl" target="_blank">
+                            <img class="img-fluid" src="/images/@Model.ImageUrl" style="border-radius: 10px; " alt="em">
+                        </a>
+                    </div><br />
+                    <div class="form-group">
+                        <label asp-for="Type" class="control-label">Тип заяви</label>
+                        <input asp-for="Type" class="form-control" readonly>
+                    </div><br />
+                    <div class="form-group">
+                        <label asp-for="MainInfo" class="control-label">Вулиця</label>
+                        <input asp-for="MainInfo" class="form-control" readonly>
+                    </div><br />
+                    <div class="form-group">
+                        <label asp-for="MoreDetail" class="control-label">Більше інформації</label>
+                        <textarea asp-for="MoreDetail" rows="5" class="form-control" readonly></textarea>
+                    </div><br />
+                    <details>
+                        <summary>@Model.AppUsers.Count() з 50 мешканців апідписали цю заяву</summary>
+                        <ol>
+                            @foreach (var item in Model.AppUsers)
+                            {
+                                <li>@item.LastName @item.FirstName @item.MiddleName</li>
+                            }
+                        </ol>
+                    </details><br/>
+                    @if (User.IsInRole("admin"))
+                    {
+                        <div class="form-group">
+                            <label asp-for="Status">Змінити статус</label>
+                            <select asp-for="Status" asp-items="@Html.GetEnumSelectList<Status>()" class="form-select">
+                                <option value="" disabled selected>@Model.Status</option>
+                            </select>
+                        </div><br />
+                        <div class="form-group">
+                            <input class="btn btn-success float right" type="submit" value="Змінити" />
+                            <a class="btn btn-outline-secondary" asp-controller="Statements" asp-action="UsersStatements">Назад</a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="form-group">
+                            <input class="btn btn-success float right" type="submit" value="Підписати" />
+                            <a class="btn btn-outline-secondary" asp-controller="Statements" asp-action="UsersStatements">Назад</a>
+                        </div>
+                    }
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

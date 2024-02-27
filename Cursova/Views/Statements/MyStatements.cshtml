@@ -1,0 +1,126 @@
+﻿@using Cursova.Data.Enum;
+@using Cursova.ViewModels;
+@model MyStatemantsViewModel
+
+<head>
+    <link rel="stylesheet" href="/css/site.css">
+</head>
+
+<br />
+<div class="row">
+    <div class="col-6">
+        <h2 class="text" style="font-family: A.C.M.E; color: #676866;">Мої заяви </h2>
+
+    </div>
+</div>
+
+@if (Model.MyStatements.Count() > 0)
+{
+    <table class="table table-striped border">
+        <tr class="table-secondary">
+            <th>
+                Тип
+            </th>
+            <th>
+                Сатус
+            </th>
+            <th>
+                Дата подання
+            </th>
+        </tr>
+        @foreach (var item in Model.MyStatements)
+        {
+            <tr>
+                <td>
+                    @item.Type
+                </td>
+                <td>
+                    @switch (item.Status)
+                    {
+                        case Status.Відхилена:
+                            <p style="color:red;"><b>@item.Status</b></p>
+                            break;
+                        case Status.Розглядається:
+                            <p style="color:deepskyblue;"><b>@item.Status</b></p>
+                            break;
+                        case Status.Ухвалена:
+                            <p style="color:limegreen;"><b>@item.Status</b></p>
+                            break;
+                        default:
+                            <p><b>@item.Status</b></p>
+                            break;
+                    }
+                </td>
+                <td>
+                    @item.DateTime.ToShortDateString()
+                </td>
+            </tr>
+        }
+    </table>
+}
+
+<div class="row">
+    <div class="col-6">
+        <h2 class="text" style="font-family: A.C.M.E; color: #676866;">Заяви які збирають підписи</h2>
+    </div>
+</div>
+
+@if (Model.NotMyStatements.Count() > 0)
+{
+    <table class="table table-striped border">
+        <tr class="table-secondary">
+            <th>
+                Тип
+            </th>
+            <th>
+                Вулиця
+            </th>
+            <th>
+                Сатус
+            </th>
+            <th>
+                Дата подання
+            </th>
+            <th></th>
+        </tr>
+        @foreach (var item in Model.NotMyStatements)
+        {
+            <tr>
+                <td>
+                    @item.Type
+                </td>
+                <td>
+                    @item.MainInfo
+                </td>
+                <td>
+                    @switch (item.Status)
+                    {
+                        case Status.Відхилена:
+                            <p style="color:red;"><b>@item.Status</b></p>
+                            break;
+                        case Status.Розглядається:
+                            <p style="color:deepskyblue;"><b>@item.Status</b></p>
+                            break;
+                        case Status.Ухвалена:
+                            <p style="color:limegreen;"><b>@item.Status</b></p>
+                            break;
+                        default:
+                            <p><b>@item.Status</b></p>
+                            break;
+                    }
+                </td>
+                <td>
+                    @item.DateTime.ToShortDateString()
+                </td>
+                <td>
+                    <div class="text-center">
+                        <a asp-controller="Statements" asp-action="AllStatementInfo" asp-route-id="@item.Id" class="btn btn-primary">Переглянути</a>
+                    </div>
+                </td>
+            </tr>
+        }
+    </table>
+}
+
+
+

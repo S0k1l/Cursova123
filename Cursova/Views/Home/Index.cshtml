@@ -1,0 +1,37 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
+
+@{
+    bool isAuthenticated = User.Identity?.IsAuthenticated == true;
+}
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+@* <div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div> *@
+
+<head>
+    <link rel="stylesheet" href="/css/site.css">
+</head>
+
+@if (isAuthenticated )
+{
+    if (User.IsInRole("user"))
+    {
+        <div class="frame">
+            <a class="btn" id="my-button" asp-controller="Statements" asp-action="MyStatements">Мої заяви</a>
+            <a class="btn" id="my-button" asp-controller="Statements" asp-action="SelectType">Подати заяву</a>
+        </div>
+    }
+    if (User.IsInRole("admin"))
+    {
+        <div class="frame">
+            <a class="btn" id="my-button" asp-controller="Statements" asp-action="UsersStatements">Заяви мешканців</a>
+        </div>
+    }
+}
